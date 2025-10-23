@@ -1,0 +1,23 @@
+# Variables de entorno
+.env
+*.env.*
+
+# Logs y bases de datos locales
+*.log
+data/
+pgdata/
+
+# Archivos de Python 
+__pycache__/
+*.pyc
+venv/
+.pytest_cache/
+
+# Archivos de Node/React (para frontend)
+node_modules/
+dist/
+build/
+
+# Archivos de sistema operativo y editores
+.DS_Store
+.vscode/
