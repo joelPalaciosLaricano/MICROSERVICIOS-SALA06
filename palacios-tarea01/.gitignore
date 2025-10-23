@@ -1,13 +1,13 @@
 # Variables de entorno
 .env
-*.env.*
+!.env.example
 
 # Logs y bases de datos locales
 *.log
 data/
 pgdata/
 
-# Archivos de Python 
+# Archivos de Python (si usas Python)
 __pycache__/
 *.pyc
 venv/
