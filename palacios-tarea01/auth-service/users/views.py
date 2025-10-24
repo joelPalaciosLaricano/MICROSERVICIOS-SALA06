@@ -2,7 +2,6 @@ from rest_framework import generics, permissions
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-# Importamos los Serializers que definiste en users/serializers.py
 from .serializers import UserSerializer, MeSerializer 
 
 class RegisterView(generics.CreateAPIView):
@@ -22,6 +21,6 @@ class MeView(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def get(self, request):
-        # El objeto 'request.user' contiene la instancia del usuario autenticado
+       
         serializer = MeSerializer(request.user)
         return Response(serializer.data, status=status.HTTP_200_OK)

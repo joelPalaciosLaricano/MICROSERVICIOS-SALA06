@@ -39,9 +39,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-# ----------------------------------------------------------------------
-# ¡ESTE BLOQUE FALTABA! LO AÑADIMOS PARA SOLUCIONAR admin.E403
-# ----------------------------------------------------------------------
+
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
@@ -57,7 +55,7 @@ TEMPLATES = [
         },
     },
 ]
-# ----------------------------------------------------------------------
+
 
 ROOT_URLCONF = "auth_service.urls"
 

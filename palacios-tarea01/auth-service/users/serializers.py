@@ -8,8 +8,6 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
         fields = ('email', 'password')
 
-    # ESTA FUNCIÓN ES CRÍTICA:
-    # Asegura que se use tu UserManager y set_password, hasheando la clave.
     def create(self, validated_data):
         user = User.objects.create_user(
             email=validated_data['email'],
