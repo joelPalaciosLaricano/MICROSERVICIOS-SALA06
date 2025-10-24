@@ -14,7 +14,7 @@ try:
         dbname=POSTGRES_DB,
         user=POSTGRES_USER,
         password=POSTGRES_PASSWORD,
-        host="postgres"
+        host="postgres",
     )
     print("Conectado a PostgreSQL correctamente.")
     conn.close()
