@@ -1,0 +1,232 @@
+openapi: 3.0.3
+info:
+  title: Blog Service API
+  description: API para el servicio de blog que permite gestionar categorías, autores y posts
+  version: 1.0.0
+servers:
+  - url: /api/v1
+    description: API versión 1
+
+paths:
+  /categories/:
+    get:
+      summary: Listar categorías
+      description: Obtiene la lista de todas las categorías activas
+      operationId: listCategories
+      tags:
+        - categories
+      responses:
+        '200':
+          description: Lista de categorías obtenida correctamente
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Category'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+  /posts/:
+    get:
+      summary: Listar posts
+      description: Obtiene la lista de todos los posts publicados
+      operationId: listPosts
+      tags:
+        - posts
+      parameters:
+        - name: search
+          in: query
+          description: Término de búsqueda para filtrar posts por título o contenido
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Lista de posts obtenida correctamente
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PostList'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+  /posts/{id}/:
+    get:
+      summary: Obtener detalle de un post
+      description: Obtiene el detalle completo de un post específico
+      operationId: retrievePost
+      tags:
+        - posts
+      parameters:
+        - name: id
+          in: path
+          description: ID del post a obtener
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Detalle del post obtenido correctamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostDetail'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+  /healthz:
+    get:
+      summary: Verificar estado del servicio
+      description: Endpoint para verificar la salud del servicio y sus dependencias
+      operationId: healthCheck
+      tags:
+        - system
+      responses:
+        '200':
+          description: El servicio está funcionando correctamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "ok"
+                  database:
+                    type: string
+                    example: "ok"
+                  cache:
+                    type: string
+                    example: "ok"
+        '500':
+          description: El servicio tiene problemas
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "error"
+                  database:
+                    type: string
+                    example: "error"
+                  cache:
+                    type: string
+                    example: "ok"
+
+components:
+  schemas:
+    Category:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 1
+        name:
+          type: string
+          example: "Tecnología"
+        slug:
+          type: string
+          example: "tecnologia"
+      required:
+        - id
+        - name
+        - slug
+
+    Author:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 1
+        display_name:
+          type: string
+          example: "Juan Pérez"
+        email:
+          type: string
+          format: email
+          example: "juan.perez@example.com"
+      required:
+        - id
+        - display_name
+        - email
+
+    PostList:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 1
+        title:
+          type: string
+          example: "Cómo mejorar tu productividad"
+        slug:
+          type: string
+          example: "como-mejorar-tu-productividad"
+        excerpt:
+          type: string
+          example: "En este artículo exploraremos técnicas para mejorar tu productividad diaria..."
+        author:
+          $ref: '#/components/schemas/Author'
+        category:
+          $ref: '#/components/schemas/Category'
+        published_at:
+          type: string
+          format: date-time
+          example: "2023-05-15T14:30:00Z"
+        views:
+          type: integer
+          example: 1250
+      required:
+        - id
+        - title
+        - slug
+        - excerpt
+        - author
+        - category
+        - published_at
+        - views
+
+    PostDetail:
+      allOf:
+        - $ref: '#/components/schemas/PostList'
+        - type: object
+          properties:
+            body:
+              type: string
+              example: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor, nisl eget ultricies tincidunt..."
+          required:
+            - body
+
+  responses:
+    NotFound:
+      description: El recurso solicitado no fue encontrado
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              detail:
+                type: string
+                example: "No encontrado."
+
+    ServerError:
+      description: Error interno del servidor
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              detail:
+                type: string
+                example: "Error interno del servidor."
