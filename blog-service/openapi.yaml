@@ -1,0 +1,53 @@
+openapi: 3.0.0
+info:
+  title: Blog Service API
+  version: '1.0'
+paths:
+  /api/categories:
+    get:
+      summary: List active categories
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    name:
+                      type: string
+                    slug:
+                      type: string
+
+  /api/posts:
+    get:
+      summary: List posts with search and pagination
+      parameters:
+        - in: query
+          name: search
+          schema:
+            type: string
+        - in: query
+          name: page
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+
+  /api/posts/{id}:
+    get:
+      summary: Post detail by id or slug
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
